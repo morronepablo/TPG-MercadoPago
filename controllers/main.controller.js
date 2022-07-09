@@ -28,8 +28,10 @@ module.exports ={
     updateCart: (req,res) => {
         // Check quantity
         if(req.body.quantity == 0) {
+            // Case 1: Is equal to zero then remove product
             req.session.cart = req.session.cart.filter(item => item.id != req.body.id)
         } else {
+            // Case 2: Update all cart items setting quantity in product selected
             req.session.cart = req.session.cart.map(item => {
                 if(item.id == req.body.id) {
                     item.quantity = req.body.quantity;
@@ -37,13 +39,12 @@ module.exports ={
                 return item;
             })
         }
-        // Case 1: Is equal to zero then remove product
-        // Case 2: Update all cart items setting quantity in product selected
         return res.redirect('/')
     }, 
     // Step 6
     removeCart: (req,res) =>{
         req.session.cart = req.session.cart.filter(item => item.id != req.body.id)
-        return res.send("Remove a product from the cart")
+        return res.redirect('/')
+        //return res.send("Remove a product from the cart")
     }
 }
